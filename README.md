@@ -25,8 +25,8 @@ Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur 
 Clonez ce dépôt sur votre machine locale :
 
 ```bash
-git clone https://github.com/votre-utilisateur/votre-repo.git
-cd votre-repo
+git clone https://github.com/NHBakli/TODO-LIST
+cd TODO-LIST
 ```
 
 Installez les dépendances du projet :
