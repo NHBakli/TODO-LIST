@@ -46,8 +46,8 @@ npm run dev
 yarn dev
 ```
 
-Ouvrez votre navigateur et accédez à [http://localhost:3000](http://localhost:3000) pour voir l'application en local.
+Ouvrez votre navigateur et accédez à <a href="http://localhost:3000" target="_blank" rel="noopener noreferrer">http://localhost:3000</a> pour voir l'application en local.
 
 ## Démo en ligne
 
-Vous pouvez également accéder à la version déployée de l'application à l'adresse suivante : [https://todo-list-beta-wheat-93.vercel.app/](https://todo-list-beta-wheat-93.vercel.app/)
+Vous pouvez également accéder à la version déployée de l'application à l'adresse suivante : <a href="https://todo-list-beta-wheat-93.vercel.app/" target="_blank" rel="noopener noreferrer">https://todo-list-beta-wheat-93.vercel.app/</a>
