@@ -11,7 +11,6 @@ Cette application est une TodoList simple construite avec **Next.js** et **TypeS
 - **Ajout de tâches** : Les utilisateurs peuvent ajouter de nouvelles tâches à leur liste.
 - **Suppression de tâches** : Les tâches peuvent être supprimées lorsqu'elles sont complétées.
 - **Persistance des données** : Les tâches sont enregistrées en Local Storage, permettant de conserver les données même après la fermeture du navigateur.
-- **Interface réactive** : L'application est responsive, offrant une expérience utilisateur optimale sur différentes tailles d'écran.
 
 ## Prérequis
 
