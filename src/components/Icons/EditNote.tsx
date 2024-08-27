@@ -1,6 +1,10 @@
-const EditNote = () => {
+interface EditNoteProps {
+  onClick: () => void;
+}
+
+const EditNote: React.FC<EditNoteProps> = ({ onClick }) => {
   return (
-    <div>
+    <div onClick={onClick}>
       <svg
         width="18"
         height="18"

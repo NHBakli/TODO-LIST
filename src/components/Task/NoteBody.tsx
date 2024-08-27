@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import EditNote from "../Icons/EditNote";
 import DeleteNote from "../Icons/DeleteNote";
 import DeleteNoteConfirmation from "./DeleteNote";
+import EditNoteConfirmation from "./EditNote";
 import Image from "next/image";
 
 interface NoteBodyProps {
@@ -15,6 +16,7 @@ interface NoteBodyProps {
 
 const NoteBody: React.FC<NoteBodyProps> = ({ notes, setNotes, filter }) => {
   const [noteToDelete, setNoteToDelete] = useState<number | null>(null);
+  const [noteToEdit, setNoteToEdit] = useState<number | null>(null);
   const [theme, setTheme] = useState<string | null>(null);
 
   useEffect(() => {
@@ -29,6 +31,23 @@ const NoteBody: React.FC<NoteBodyProps> = ({ notes, setNotes, filter }) => {
     );
     setNotes(updatedNotes);
     localStorage.setItem("notes", JSON.stringify(updatedNotes));
+  };
+
+  const handleEditNote = (index: number) => {
+    setNoteToEdit(index);
+  };
+
+  const handleNoteEdited = (index: number, newNote: string) => {
+    const updatedNotes = notes.map((note, i) =>
+      i === index ? { ...note, text: newNote } : note
+    );
+    setNotes(updatedNotes);
+    localStorage.setItem("notes", JSON.stringify(updatedNotes));
+    setNoteToEdit(null); // Fermer la modal d'édition
+  };
+
+  const cancelEdit = () => {
+    setNoteToEdit(null);
   };
 
   // Fonction pour définir la note à supprimer
@@ -106,7 +125,7 @@ const NoteBody: React.FC<NoteBodyProps> = ({ notes, setNotes, filter }) => {
                 {note.text}
               </h2>
               <div className="flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-auto mr-2">
-                <EditNote />
+                <EditNote onClick={() => handleEditNote(index)} />
                 <DeleteNote onClick={() => handleDeleteNote(index)} />
               </div>
             </div>
@@ -125,6 +144,18 @@ const NoteBody: React.FC<NoteBodyProps> = ({ notes, setNotes, filter }) => {
           <p className="mt-8 font-medium text-xl text-center text-black dark:text-white">
             Empty...
           </p>
+        </div>
+      )}
+
+      {noteToEdit !== null && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-10">
+          <div className="fixed inset-0 flex items-center justify-center z-20">
+            <EditNoteConfirmation
+              note={notes[noteToEdit].text}
+              onCancel={cancelEdit}
+              onNoteEdited={(newNote) => handleNoteEdited(noteToEdit, newNote)}
+            />
+          </div>
         </div>
       )}
 
