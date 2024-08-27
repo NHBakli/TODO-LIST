@@ -11,6 +11,7 @@ Cette application est une TodoList simple construite avec **Next.js** et **TypeS
 - **Ajout de tâches** : Les utilisateurs peuvent ajouter de nouvelles tâches à leur liste.
 - **Suppression de tâches** : Les tâches peuvent être supprimées lorsqu'elles sont complétées.
 - **Persistance des données** : Les tâches sont enregistrées en Local Storage, permettant de conserver les données même après la fermeture du navigateur.
+- **Interface réactive** : L'application est responsive, offrant une expérience utilisateur optimale sur différentes tailles d'écran.
 
 ## Prérequis
 
@@ -24,8 +25,8 @@ Avant de commencer, assurez-vous d'avoir les éléments suivants installés sur 
 Clonez ce dépôt sur votre machine locale :
 
 ```bash
-git clone https://github.com/NHBakli/TODO-LIST
-cd TODO-LIST
+git clone https://github.com/votre-utilisateur/votre-repo.git
+cd votre-repo
 ```
 
 Installez les dépendances du projet :
@@ -46,8 +47,8 @@ npm run dev
 yarn dev
 ```
 
-Ouvrez votre navigateur et accédez à <a href="http://localhost:3000" target="_blank" rel="noopener noreferrer">http://localhost:3000</a> pour voir l'application en local.
+Ouvrez votre navigateur et accédez à [http://localhost:3000](http://localhost:3000) pour voir l'application en local.
 
 ## Démo en ligne
 
-Vous pouvez également accéder à la version déployée de l'application à l'adresse suivante : <a href="https://todo-list-beta-wheat-93.vercel.app/" target="_blank" rel="noopener noreferrer">https://todo-list-beta-wheat-93.vercel.app/</a>
+Vous pouvez également accéder à la version déployée de l'application à l'adresse suivante : [Demo](https://todo-list-beta-wheat-93.vercel.app/)
