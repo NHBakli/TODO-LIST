@@ -3,9 +3,10 @@ import React, { useState } from "react";
 
 interface CreateNoteProps {
   onCancel: () => void;
+  onNoteAdded: (newNote: string) => void;
 }
 
-const CreateNote: React.FC<CreateNoteProps> = ({ onCancel }) => {
+const CreateNote: React.FC<CreateNoteProps> = ({ onCancel, onNoteAdded }) => {
   const [note, setNote] = useState<string>("");
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -14,14 +15,8 @@ const CreateNote: React.FC<CreateNoteProps> = ({ onCancel }) => {
 
   const addNote = () => {
     if (note.trim()) {
-      const existingNotes = JSON.parse(localStorage.getItem("notes") || "[]");
-
-      const updatedNotes = [...existingNotes, note];
-
-      localStorage.setItem("notes", JSON.stringify(updatedNotes));
-
+      onNoteAdded(note);
       setNote("");
-
       onCancel();
     }
   };

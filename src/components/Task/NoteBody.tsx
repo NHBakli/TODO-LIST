@@ -1,85 +1,142 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { useState, useEffect } from "react";
 import EditNote from "../Icons/EditNote";
 import DeleteNote from "../Icons/DeleteNote";
+import DeleteNoteConfirmation from "./DeleteNote";
+import Image from "next/image";
 
-const NoteBody = () => {
-  const [notes, setNotes] = useState<string[]>([]);
-  const [checkedNotes, setCheckedNotes] = useState<boolean[]>([]);
+interface NoteBodyProps {
+  notes: { text: string; checked: boolean }[];
+  setNotes: React.Dispatch<
+    React.SetStateAction<{ text: string; checked: boolean }[]>
+  >;
+  filter: string;
+}
 
-  const fetchNotes = () => {
-    const storedNotes = localStorage.getItem("notes");
-    if (storedNotes) {
-      const parsedNotes = JSON.parse(storedNotes);
-      setNotes(parsedNotes);
-      setCheckedNotes(new Array(parsedNotes.length).fill(false));
+const NoteBody: React.FC<NoteBodyProps> = ({ notes, setNotes, filter }) => {
+  const [noteToDelete, setNoteToDelete] = useState<number | null>(null);
+  const [theme, setTheme] = useState<string | null>(null);
+
+  useEffect(() => {
+    const storedTheme = localStorage.getItem("theme");
+    setTheme(storedTheme);
+  }, []);
+
+  // Fonction pour basculer l'état checked d'une note
+  const toggleCheck = (index: number) => {
+    const updatedNotes = notes.map((note, i) =>
+      i === index ? { ...note, checked: !note.checked } : note
+    );
+    setNotes(updatedNotes);
+    localStorage.setItem("notes", JSON.stringify(updatedNotes));
+  };
+
+  // Fonction pour définir la note à supprimer
+  const handleDeleteNote = (index: number) => {
+    setNoteToDelete(index);
+  };
+
+  // Fonction pour confirmer la suppression d'une note
+  const confirmDelete = () => {
+    if (noteToDelete !== null) {
+      const updatedNotes = notes.filter((_, index) => index !== noteToDelete);
+      setNotes(updatedNotes);
+      localStorage.setItem("notes", JSON.stringify(updatedNotes));
+      setNoteToDelete(null);
     }
   };
 
-  useEffect(() => {
-    fetchNotes();
-  }, []);
-
-  const toggleCheck = (index: number) => {
-    const updatedCheckedNotes = [...checkedNotes];
-    updatedCheckedNotes[index] = !updatedCheckedNotes[index];
-    setCheckedNotes(updatedCheckedNotes);
+  // Fonction pour annuler la suppression
+  const cancelDelete = () => {
+    setNoteToDelete(null);
   };
+
+  // Filtrer les notes selon l'état du filtre
+  const filteredNotes = notes.filter((note) => {
+    if (filter === "Complete") return note.checked;
+    if (filter === "Incomplete") return !note.checked;
+    return true;
+  });
 
   return (
     <div className="w-2/6 mt-5">
-      {notes.length > 0 ? (
-        notes.map((note, index) => (
-          <div
-            key={index}
-            className={`note-item flex items-center mb-4 cursor-pointer group ${
-              index !== notes.length - 1 ? "border-b border-primary" : ""
-            } pb-4`}
-          >
+      {filteredNotes.length > 0 ? (
+        filteredNotes.map((note, index) => {
+          return (
             <div
-              className={`mr-4 w-6 h-6 border rounded-sm cursor-pointer ${
-                checkedNotes[index]
-                  ? "bg-primary border-primary"
-                  : "border-primary"
-              }`}
-              onClick={() => toggleCheck(index)}
+              key={index}
+              className={`note-item flex items-center mb-4 cursor-pointer group ${
+                index !== filteredNotes.length - 1
+                  ? "border-b border-primary"
+                  : ""
+              } pb-4`}
             >
-              {checkedNotes[index] && (
-                <div className="flex justify-center items-center h-full">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    fill="none"
-                    viewBox="0 0 24 24"
-                    strokeWidth="2"
-                    stroke="white"
-                    className="w-4 h-4"
-                  >
-                    <path
-                      strokeLinecap="round"
-                      strokeLinejoin="round"
-                      d="M5 13l4 4L19 7"
-                    />
-                  </svg>
-                </div>
-              )}
+              <div
+                className={`mr-4 w-6 h-6 border rounded-sm cursor-pointer ${
+                  note.checked ? "bg-primary border-primary" : "border-primary"
+                }`}
+                onClick={() => toggleCheck(index)}
+              >
+                {note.checked && (
+                  <div className="flex justify-center items-center h-full">
+                    <svg
+                      xmlns="http://www.w3.org/2000/svg"
+                      fill="none"
+                      viewBox="0 0 24 24"
+                      strokeWidth="2"
+                      stroke="white"
+                      className="w-4 h-4"
+                    >
+                      <path
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        d="M5 13l4 4L19 7"
+                      />
+                    </svg>
+                  </div>
+                )}
+              </div>
+              <h2
+                className={`text-xl font-medium ${
+                  note.checked
+                    ? "text-black dark:text-white dark:text-opacity-50 text-opacity-50 line-through"
+                    : "text-black dark:text-white"
+                }`}
+              >
+                {note.text}
+              </h2>
+              <div className="flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-auto mr-2">
+                <EditNote />
+                <DeleteNote onClick={() => handleDeleteNote(index)} />
+              </div>
             </div>
-            <h2
-              className={`text-xl font-medium ${
-                checkedNotes[index]
-                  ? "text-white text-opacity-50 line-through"
-                  : "text-black dark:text-white"
-              }`}
-            >
-              {note}
-            </h2>
-            <div className="flex space-x-1 opacity-0 group-hover:opacity-100 transition-opacity duration-200 ml-auto mr-2">
-              <EditNote />
-              <DeleteNote />
-            </div>
-          </div>
-        ))
+          );
+        })
       ) : (
-        <p className="text-black dark:text-white">No notes available.</p>
+        <div className="flex flex-col items-center justify-center">
+          <Image
+            src={
+              theme === "dark" ? "/Detectivedark.png" : "/Detectivelight.png"
+            }
+            width={250}
+            height={200}
+            alt="loupe"
+          />
+          <p className="mt-8 font-medium text-xl text-center text-black dark:text-white">
+            Empty...
+          </p>
+        </div>
+      )}
+
+      {noteToDelete !== null && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 backdrop-blur-sm z-10">
+          <div className="fixed inset-0 flex items-center justify-center z-20">
+            <DeleteNoteConfirmation
+              onCancel={cancelDelete}
+              onDelete={confirmDelete}
+            />
+          </div>
+        </div>
       )}
     </div>
   );

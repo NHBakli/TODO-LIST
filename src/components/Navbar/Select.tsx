@@ -2,7 +2,11 @@
 import { useState } from "react";
 import { IoIosArrowDown } from "react-icons/io";
 
-const CustomSelect: React.FC = () => {
+interface CustomSelectProps {
+  onFilterChange: (filter: string) => void;
+}
+
+const CustomSelect: React.FC<CustomSelectProps> = ({ onFilterChange }) => {
   const [selected, setSelected] = useState("All");
   const [isOpen, setIsOpen] = useState(false);
 
@@ -11,6 +15,12 @@ const CustomSelect: React.FC = () => {
     { value: "Complete", label: "Complete" },
     { value: "Incomplete", label: "Incomplete" },
   ];
+
+  const handleSelect = (optionValue: string) => {
+    setSelected(optionValue);
+    onFilterChange(optionValue);
+    setIsOpen(false);
+  };
 
   return (
     <div className="relative w-32 h-10">
@@ -35,10 +45,7 @@ const CustomSelect: React.FC = () => {
               className={`select-none relative py-2 pl-3 pr-2 text-primary font-bold cursor-pointer ${
                 option.value === selected ? "text-primary" : "text-gray-900"
               } hover:bg-secondary hover:bg-opacity-20 hover:text-primary`}
-              onClick={() => {
-                setSelected(option.value);
-                setIsOpen(false);
-              }}
+              onClick={() => handleSelect(option.value)}
             >
               <span className="block truncate">{option.label}</span>
             </li>

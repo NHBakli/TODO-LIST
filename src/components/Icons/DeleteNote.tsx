@@ -1,6 +1,10 @@
-const DeleteNote = () => {
+interface DeleteNoteProps {
+  onClick: () => void;
+}
+
+const DeleteNote: React.FC<DeleteNoteProps> = ({ onClick }) => {
   return (
-    <div>
+    <div onClick={onClick}>
       <svg
         width="18"
         height="18"
@@ -16,14 +20,14 @@ const DeleteNote = () => {
         <path
           d="M14.625 3.75H3.375"
           stroke="currentColor"
-          stroke-linecap="round"
+          strokeLinecap="round"
         />
         <path
           d="M7.5 2.25C7.5 1.83579 7.83577 1.5 8.25 1.5H9.75C10.1642 1.5 10.5 1.83579 10.5 2.25V3.75H7.5V2.25Z"
           stroke="currentColor"
         />
-        <path d="M10.5 9V12.75" stroke="currentColor" stroke-linecap="round" />
-        <path d="M7.5 9V12.75" stroke="currentColor" stroke-linecap="round" />
+        <path d="M10.5 9V12.75" stroke="currentColor" strokeLinecap="round" />
+        <path d="M7.5 9V12.75" stroke="currentColor" strokeLinecap="round" />
       </svg>
     </div>
   );
